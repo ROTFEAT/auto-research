@@ -45,6 +45,28 @@ git clone https://github.com/ROTFEAT/auto-research.git
 cp -r auto-research/skills/auto-research ~/.claude/skills/
 ```
 
+### Updating
+
+**Skills CLI:**
+
+```bash
+npx skills add ROTFEAT/auto-research --all
+```
+
+Re-running the install command pulls the latest version.
+
+**Symlink (git clone):**
+
+```bash
+cd /path/to/auto-research && git pull
+```
+
+Changes propagate instantly through the symlink — no re-install needed.
+
+**Direct copy:**
+
+Re-clone and copy again to overwrite the old version.
+
 ### Verify Installation
 
 In Claude Code, the skill should appear when you run `/skills` or when Claude detects a research-type question.
