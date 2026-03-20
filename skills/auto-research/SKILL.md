@@ -35,19 +35,33 @@ NEVER pass session history to Executor or Checker. NEVER skip Checker dispatch. 
 
 1. **Parse the research question.** Reframe as a verifiable question if needed.
 
-2. **Generate 3-5 convergence criteria options** using AskUserQuestion (multi-select). Examples:
+2. **Explore project context.** Before generating ANY hypotheses, understand what already exists:
+   - Read project README, docs, and configuration files
+   - Search the codebase for functionality related to the research question (Glob + Grep)
+   - Identify what the project already supports, implements, or has solved
+   - Note relevant architecture, dependencies, and constraints
+   - Summarize findings as a `## Known Context` section in config.md
+
+   <HARD-GATE>
+   NEVER generate hypotheses without completing context exploration first. Hypotheses that duplicate existing project functionality indicate skipped context exploration — delete them and re-explore.
+   </HARD-GATE>
+
+3. **Generate 3-5 convergence criteria options** using AskUserQuestion (multi-select). Examples:
    - "Leading hypothesis confidence reaches 70+ with no competitor above 40"
    - "At least N hypotheses refuted with evidence grade B+"
    - "Leading hypothesis supported by 3+ independent sources"
    - Generate domain-specific criteria based on the question type
 
-3. **Generate 3-7 initial hypotheses.** Present to user for adjustment. Always include:
-   - Conventional explanation
-   - Counter-intuitive explanation
-   - Simplest baseline
-   - Measurement bias / null hypothesis
+4. **Generate 3-7 initial hypotheses.** Present to user for adjustment.
+   - Each hypothesis MUST be checked against Known Context — discard any that duplicate what the project already does
+   - Always include:
+     - Conventional explanation
+     - Counter-intuitive explanation
+     - Simplest baseline
+     - Measurement bias / null hypothesis
+   - For project-specific research: hypotheses should target what is UNKNOWN or UNSUPPORTED, not what already works
 
-4. **Create workspace:**
+5. **Create workspace:**
    - Create directory `research/<topic-slug>/rounds/`
    - Write `config.md` from `templates/config-template.md`
    - Initialize `scoreboard.md` from `templates/scoreboard-template.md`
@@ -77,6 +91,7 @@ Read `executor-prompt.md`, fill placeholders, dispatch as Agent subagent (`subag
 
 **Executor gets ONLY:**
 - Research question
+- Known Context summary (from config.md — so Executor knows what already exists)
 - This round's verification goal
 - Target hypotheses
 - Verification method
@@ -192,3 +207,5 @@ After round 5, summarize earlier rounds into compact form. Keep only:
 | Start with single hypothesis | Always 3-7 competing hypotheses |
 | Raise confidence on D-grade evidence | D-grade cannot raise scores |
 | Ignore prior Checker concerns | Pass cumulative concerns to each Checker |
+| Generate hypotheses without exploring project first | Complete context exploration, document Known Context |
+| Propose hypotheses that duplicate existing functionality | Check every hypothesis against Known Context before including |

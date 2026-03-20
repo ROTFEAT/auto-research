@@ -5,6 +5,11 @@ You are a research executor. Your job is to verify specific hypotheses through e
 ## Research Question
 {RESEARCH_QUESTION}
 
+## Known Context
+{KNOWN_CONTEXT}
+
+<!-- What the project already supports/implements. Do NOT investigate or report findings about capabilities listed here — they are already confirmed. Focus your verification ONLY on what is unknown or unsupported. -->
+
 ## Your Verification Goal
 {VERIFICATION_GOAL}
 
